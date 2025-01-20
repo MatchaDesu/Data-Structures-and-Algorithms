@@ -50,13 +50,17 @@ class BST :
         self.set_root(recursion_insert(self.get_root(), data))
 
     def delete(self, data) :
-        def find_data(start) :
+        def delete_data(start, data) :
+            if start == None :
+                print("Delete Error,",data,"is not found in Binary Search Tree.")
+                return
+
             if data < start.get_data() :
-                start.set_left(find_data(start.get_left()))
+                start.set_left(delete_data(start.get_left(), data))
 
             elif data > start.get_data() :
-                start.set_right(find_data(start.get_right()))
-    
+                start.set_right(delete_data(start.get_right(), data))
+
             else :
                 if start.get_left() == None :
                     return start.get_right()
@@ -64,19 +68,19 @@ class BST :
                 elif start.get_right() == None :
                     return start.get_left()
 
-                else :
-                    newRoot = BST()
-                    newRoot.set_root(start.get_left())
-                    maxValue = newRoot.findMax()
+                maxValue = start.get_left()
 
-                    start.set_data(maxValue)
-                    newRoot.delete(maxValue)
+                while maxValue.get_right() != None :
+                    maxValue = maxValue.get_right()
+
+                start.set_data(maxValue.get_data())
+                start.set_left(delete_data(start.get_left(), maxValue.get_data()))
 
             return start
 
-        find_data(self.get_root())
+        self.set_root(delete_data(self.get_root(), data))
 
-    def findMin(self) :
+    def find_min(self) :
         def recursion_min(root) :
             if root.get_left() == None :
                 return root.get_data()
@@ -84,7 +88,7 @@ class BST :
 
         return recursion_min(self.get_root())
 
-    def findMax(self) :
+    def find_max(self) :
         def recursion_max(root) :
             if root.get_right() == None :
                 return root.get_data()
@@ -144,3 +148,20 @@ class BST :
         print("Postorder:",end=" ")
         self.postorder()
         print()
+
+def main():
+  my_bst = BST()
+  while 1:
+    text = input()
+    if text == "Done":
+      break
+    condition, data = text.split(": ")
+    if condition == "I":
+      my_bst.insert(int(data))
+    elif condition == "D":
+      my_bst.delete(int(data))
+    else:
+      print("Invalid Condition")
+  my_bst.traverse()
+
+main()

@@ -23,3 +23,10 @@ class BSTNode :
     def set_right(self, right) :
         self.right = right
 
+def main() :
+    node = BSTNode()
+    node.set_data(int(input()))
+    print(node.get_data())
+    print(node.get_left())
+    print(node.get_right())
+main()

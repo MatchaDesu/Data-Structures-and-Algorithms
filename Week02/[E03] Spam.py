@@ -43,15 +43,44 @@ class ArrayStack :
     def print_stack(self) :
         print(self.data)
 
-def bracketType(bracket) :
-    match (bracket) :
-        case "(" | ")" :
-            return "Round Bracket"
-        case "{" | "}" :
-            return "Brace Bracket"
-        case "[" | "]" :
-            return "Square Bracket"
+def main() :
+    text = input()
+    circle = ArrayStack()
+    square = ArrayStack()
+    curly = ArrayStack()
+    status = True
 
-def checkingTag(tag) :
-    stack = ArrayStack()
-    
+    for i in text :
+        if i in "(" :
+            circle.push(i)
+
+        if i in ")" :
+            if circle.is_empty() :
+                status = False
+            circle.pop()
+
+
+
+        if i in "[" :
+            square.push(i)
+
+        if i in "]" :
+            if square.is_empty() :
+                status = False
+            square.pop()
+
+
+
+        if i in "{" :
+            curly.push(i)
+
+        if i in "}" :
+            if curly.is_empty() :
+                status = False
+            curly.pop()
+
+    if curly.get_size() + square.get_size() + circle.get_size() > 0 :
+        status = False
+    return status
+
+print(main())

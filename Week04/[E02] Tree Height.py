@@ -68,13 +68,13 @@ class BST :
                 elif start.get_right() == None :
                     return start.get_left()
 
-                """maxValue = start.get_left()
+                maxValue = start.get_left()
 
                 while maxValue.get_right() != None :
                     maxValue = maxValue.get_right()
 
                 start.set_data(maxValue.get_data())
-                start.set_left(delete_data(start.get_left(), maxValue.get_data()))"""
+                start.set_left(delete_data(start.get_left(), maxValue.get_data()))
 
             return start
 
@@ -149,21 +149,40 @@ class BST :
         self.postorder()
         print()
     
+    def isExist(self, data) :
+        def find_data_recursion(root, data) :
+            if root == None :
+                return False
+            if data < root.get_data() :
+                return find_data_recursion(root.get_left(), data)
+            elif data > root.get_data() :
+                return find_data_recursion(root.get_right(), data)
+            return True
+
+        return find_data_recursion(self.get_root(), data)
     
+    def height(self):
+        def height_recursion(root):
+            if root is None:
+                return 0
+            return 1 + max(height_recursion(root.get_left()), height_recursion(root.get_right()))
+
+        return height_recursion(self.get_root())
 
 def main():
-  my_bst = BST()
-  while 1:
-    text = input()
-    if text == "Done":
-      break
-    condition, data = text.split(": ")
-    if condition == "I":
-      my_bst.insert(int(data))
-    elif condition == "D":
-      my_bst.delete(int(data))
-    else:
-      print("Invalid Condition")
-  my_bst.traverse()
-
+    my_bst = BST()
+    while True:
+        text = input()
+        if text == "Done":
+            break
+        condition, data = text.split(": ")
+        if condition == "I":
+            my_bst.insert(int(data))
+        elif condition == "D":
+            my_bst.delete(int(data))
+        else:
+            print("Invalid Condition")
+    
+    print(my_bst.height())
 main()
+

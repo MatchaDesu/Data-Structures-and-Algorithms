@@ -52,7 +52,9 @@ class BST :
     def delete(self, data) :
         pass
 
-    def findMin(self) :
+    def find_min(self) :
+        if self.get_root() == None :
+            return
         def recursion_min(root) :
             if root.get_left() == None :
                 return root.get_data()
@@ -60,7 +62,9 @@ class BST :
 
         return recursion_min(self.get_root())
 
-    def findMax(self) :
+    def find_max(self) :
+        if self.get_root() == None :
+            return
         def recursion_max(root) :
             if root.get_right() == None :
                 return root.get_data()
@@ -120,3 +124,13 @@ class BST :
         print("Postorder:",end=" ")
         self.postorder()
         print()
+
+def main():
+  my_bst = BST()
+  for i in range(int(input())):
+    my_bst.insert(int(input()))
+  my_bst.traverse()
+  print("Max:", my_bst.find_max())
+  print("Min:", my_bst.find_min())
+
+main()

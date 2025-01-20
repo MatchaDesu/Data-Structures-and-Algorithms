@@ -50,13 +50,51 @@ class BST :
         self.set_root(recursion_insert(self.get_root(), data))
 
     def delete(self, data) :
-        pass
+        def delete_data(start, data) :
+            if start == None :
+                print("Delete Error,",data,"is not found in Binary Search Tree.")
+                return
 
-    def findMin(self) :
-        pass
+            if data < start.get_data() :
+                start.set_left(delete_data(start.get_left(), data))
 
-    def findMax(self) :
-        pass
+            elif data > start.get_data() :
+                start.set_right(delete_data(start.get_right(), data))
+
+            else :
+                if start.get_left() == None :
+                    return start.get_right()
+
+                elif start.get_right() == None :
+                    return start.get_left()
+
+                maxValue = start.get_left()
+
+                while maxValue.get_right() != None :
+                    maxValue = maxValue.get_right()
+
+                start.set_data(maxValue.get_data())
+                start.set_left(delete_data(start.get_left(), maxValue.get_data()))
+
+            return start
+
+        self.set_root(delete_data(self.get_root(), data))
+
+    def find_min(self) :
+        def recursion_min(root) :
+            if root.get_left() == None :
+                return root.get_data()
+            return  recursion_min(root.get_left())
+
+        return recursion_min(self.get_root())
+
+    def find_max(self) :
+        def recursion_max(root) :
+            if root.get_right() == None :
+                return root.get_data()
+            return recursion_max(root.get_right())
+
+        return recursion_max(self.get_root())
 
     def is_empty(self) :
         return True if self.get_root() == None else False
@@ -110,3 +148,34 @@ class BST :
         print("Postorder:",end=" ")
         self.postorder()
         print()
+    
+    def isExist(self, data) :
+        def find_data_recursion(root, data) :
+            if root == None :
+                return False
+            if data < root.get_data() :
+                return find_data_recursion(root.get_left(), data)
+            elif data > root.get_data() :
+                return find_data_recursion(root.get_right(), data)
+            return True
+
+        return find_data_recursion(self.get_root(), data)
+
+def main():
+    my_bst = BST()
+    while True:
+        text = input()
+        if text == "Done":
+            break
+        condition, data = text.split(": ")
+        if condition == "I":
+            my_bst.insert(int(data))
+        elif condition == "D":
+            my_bst.delete(int(data))
+        else:
+            print("Invalid Condition")
+
+    print(my_bst.isExist(int(input())))
+
+main()
+

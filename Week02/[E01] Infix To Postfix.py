@@ -43,32 +43,48 @@ class ArrayStack :
     def print_stack(self) :
         print(self.data)
 
-def main() :
-    "Testcase"
-    stack = int(input())
-    student = int(input())
-    placeholder = ArrayStack()
-    mainStack = list()
-    count = 0
+def priority(operand) :
+    match (operand) :
+        case "*" | "/" :
+            return 2
+        case "+" | "-" :
+            return 1
+    return 0
 
-    for i in range(stack) :
-        mainStack.append(ArrayStack())
+def infixToPostfix(expression) :
+    postfix = ""
+    stack = ArrayStack()
 
-    for i in range(student) :
-        placeholder.push(input())
+    for i in expression.replace(" ","") :
+        if i.isalnum() :
+            postfix += i
 
-    while not placeholder.is_empty() :
-        for i in mainStack :
-            if count >= student or placeholder.is_empty() :
-                break
-            i.push(placeholder.pop())
-            count += 1
-    
-    count = 0
+        elif i == "(" :
+            stack.push(i)
+        
+        elif i == ")" :
+            while stack.get_stack_top() != "(" :
+                postfix += stack.pop()
+            stack.pop()
 
-    for i in mainStack :
-        count += 1
-        print(f"Group {count}:",end=" ")
-        print(*i.data, sep=", ")
-    
-main()
+        else :
+            if stack.is_empty() :
+                stack.push(i)
+            elif priority(i) > priority(stack.get_stack_top()) :
+                stack.push(i)
+            else :
+                while not stack.is_empty() :
+                    if priority(stack.get_stack_top()) >= priority(i) :
+                        postfix += stack.pop()
+                    else :
+                        break
+                stack.push(i)
+
+        #print(stack.data)
+
+    while not stack.is_empty() :
+        postfix += stack.pop()
+
+    return postfix
+
+print(infixToPostfix(input()))
